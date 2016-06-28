@@ -24,7 +24,7 @@ function roll(mssg) {
 bot.on('message', function(user, userID, channelID, message, event) {
     console.log(typeof(message));
     console.log(message);
-    if (message.includes("!roll") ){
+    if (message.startsWith("!roll") ){
         bot.sendMessage({
             to: channelID,
             message: roll(message).toString()
