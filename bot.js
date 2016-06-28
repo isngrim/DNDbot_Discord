@@ -14,7 +14,7 @@ function roll(mssg) {
         var data = mssg.split(":");
         var num = Number(data[1]);
         return Math.ceil(Math.random() * num);
-    catch {
+    catch (err) {
         return -1;
     }
 
