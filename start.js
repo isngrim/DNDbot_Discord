@@ -1,11 +1,11 @@
-const cluster = require('cluster'),
+/*var   cluster = require('cluster'),
       stopSignals = [
         'SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
         'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
       ],
       production = process.env.NODE_ENV == 'production';
 
-let stopping = false;
+var stopping = false;
 
 cluster.on('disconnect', function(worker) {
   if (production) {
@@ -37,4 +37,7 @@ if (cluster.isMaster) {
   }
 } else {
   require('./app.js');
-}
+  require('./bot.js');
+}*/
+require('./bot.js');
+
