@@ -13,7 +13,16 @@ function roll(mssg) {
     try {
         var data = mssg.split(":");
         var num = Number(data[1]);
-        return Math.ceil(Math.random() * num);
+        var mult = 1;
+        if(data[2]) {
+            mult = Number(data[2]);
+        }
+
+        var output = "";
+        for(var i = 0; i < mult; i++ ){
+            output += Math.ceil(Math.random() * num).toString() + "  ";
+        }
+        return output;
     }
     catch (err) {
         return -1;
@@ -27,7 +36,7 @@ bot.on('message', function(user, userID, channelID, message, event) {
     if (message.startsWith("!roll") ){
         bot.sendMessage({
             to: channelID,
-            message: roll(message).toString()
+            message: roll(message)
         })
     }
 });
