@@ -19,6 +19,7 @@ function roll(mssg) {
         }
 
         var output = "";
+        if(mult > 100) mult = 100;
         for(var i = 0; i < mult; i++ ){
             output += Math.ceil(Math.random() * num).toString() + "  ";
         }
