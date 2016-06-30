@@ -1,1 +1,1 @@
-# DNDbot_Discorf
+# DNDbot_Discord
