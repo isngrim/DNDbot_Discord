@@ -18,15 +18,15 @@ function roll(mssg) {
             mult = Number(data[2]);
         }
 
-        var output = "";
+        var output = [];
         if(mult > 100) mult = 100;
         for(var i = 0; i < mult; i++ ){
-            output += Math.ceil(Math.random() * num).toString() + "  ";
+            output.push(Math.ceil(Math.random() * num).toString());
         }
         return output;
     }
     catch (err) {
-        return -1;
+        return [NaN];
     }
 
 }
@@ -35,9 +35,12 @@ bot.on('message', function(user, userID, channelID, message, event) {
     console.log(typeof(message));
     console.log(message);
     if (message.startsWith("!roll") ){
-        bot.sendMessage({
-            to: channelID,
-            message: roll(message)
-        })
+        var rolls = roll(message)
+        for(var i = 0; i < rolls.length; i += 2) {
+            bot.sendMessage({
+                to: channelID,
+                message: rolls[i] + "\n" + rolls[i+1] + "\n";
+            })
+        }
     }
 });
