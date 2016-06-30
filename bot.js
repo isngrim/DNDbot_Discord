@@ -36,10 +36,10 @@ bot.on('message', function(user, userID, channelID, message, event) {
     console.log(message);
     if (message.startsWith("!roll") ){
         var rolls = roll(message)
-        for(var i = 0; i < rolls.length; i += 2) {
+        for(var i = 0; i < rolls.length; i++) {
             bot.sendMessage({
                 to: channelID,
-                message: rolls[i] + "\n" + rolls[i+1] + "\n";
+                message: rolls[i];
             })
         }
     }
