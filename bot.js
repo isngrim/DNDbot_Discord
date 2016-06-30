@@ -38,9 +38,15 @@ bot.on('message', function(user, userID, channelID, message, event) {
         try {
             var rolls = roll(message);
             for(var i = 0; i < rolls.length; i++) {
+                var aggregate = "";
+                for(var j = 0; j < 10; j++) {
+                    if(10*i + j >= rolls.length)
+                        break;
+                    aggregate += rolls[i*10 + j] + "\n";
+                }
                 bot.sendMessage({
                     to: channelID,
-                    message: rolls[i]
+                    message: aggregate;
                 });
             }
         }
