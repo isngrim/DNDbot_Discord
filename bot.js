@@ -4,7 +4,12 @@ var bot = new Discord.Client({
     token: "MTk3MTg4MzI0MTQwNTE1MzI5.ClN9cA.QWf5EAxRWzWrDNDT7wHXD20Vbas",
     autorun: true
 });
-
+if (typeof String.prototype.startsWith != 'function') {
+  //Implementation to startsWith starts below
+  String.prototype.startsWith = function (str){
+    return this.indexOf(str) == 0;
+  };
+}
 bot.on('ready', function() {
     console.log(bot.username + " - (" + bot.id + ")");
 });
@@ -41,7 +46,7 @@ bot.on('message', function(user, userID, channelID, message, event) {
             for(var j = 0; j < 10; j++) {
                 if(10*i + j >= rolls.length)
                     break;
-                aggregate += rolls[i*10 + j] + "\n";
+                aggregate += "Roll:\t" + rolls[i*10 + j] + "\n";
             }
             bot.sendMessage({
                 to: channelID,
