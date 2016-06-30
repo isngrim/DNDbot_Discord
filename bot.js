@@ -35,11 +35,19 @@ bot.on('message', function(user, userID, channelID, message, event) {
     console.log(typeof(message));
     console.log(message);
     if (message.startsWith("!roll") ){
-        var rolls = roll(message)
-        for(var i = 0; i < rolls.length; i++) {
+        try {
+            var rolls = roll(message);
+            for(var i = 0; i < rolls.length; i++) {
+                bot.sendMessage({
+                    to: channelID,
+                    message: rolls[i]
+                });
+            }
+        }
+        catch(err) {
             bot.sendMessage({
                 to: channelID,
-                message: rolls[i];
+                message: "Error, could not roll"
             })
         }
     }
