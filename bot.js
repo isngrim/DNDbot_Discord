@@ -1,9 +1,15 @@
-var Discord = require('discord.io')
+var Discord = require('discord.io');
+var DND = require('./dnd.js');
 
 var bot = new Discord.Client({
     token: "MTk3MTg4MzI0MTQwNTE1MzI5.ClN9cA.QWf5EAxRWzWrDNDT7wHXD20Vbas",
     autorun: true
 });
+
+
+
+bot.games = {};
+
 if (typeof String.prototype.startsWith != 'function') {
   //Implementation to startsWith starts below
   String.prototype.startsWith = function (str){
@@ -35,10 +41,57 @@ function roll(mssg) {
     }
 
 }
+function processGame(user, userID, channelID, message, event) {
+    if(message.startsWith("!game.init") ) {
+        if(!bot.games.hasOwnProperty(channelID)) {
+            bot.games[channelID] = new DND.Game(channelID);
+            bot.sendMessage({
+                to: channelID,
+                message: "Game created.  Add players now."
+            });
+        }
+        else {
+            bot.sendMessage({
+                to: channelID,
+                message: "Game already created. Game Status:"+ bot.games[channelID].state
+            });
+        }
+    }
+    if(message.startsWith("!game.list") ) {
+        console.log(bot.games);
+        for(var game in bot.games) {
+            bot.sendMessage({
+                to: channelID,
+                message: "Game: " +bot.channels[game].name
+            }); 
+        }
+    }
+    if(message.startsWith("!game.end") ) {
+        if(bot.games.hasOwnProperty(channelID)) {
+            bot.sendMessage({
+                to: channelID,
+                message: "Game ended"
+            });
+            delete bot.games[channelID]
+        }
+        else {
+            bot.sendMessage({
+                to: channelID,
+                message: "Game does not exist."
+            }); 
+        }
+    }
+    if(message.startsWith("!game.add-player")) {
+        if(bot.games.hasOwnProperty(channelID)) {
+            console.log(event.d.mentions)
+        }
 
+    }
+}
 bot.on('message', function(user, userID, channelID, message, event) {
-    console.log(typeof(message));
-    console.log(message);
+    if (message.startsWith("!game")) {
+        processGame(user, userID, channelID, message, event);
+    }
     if (message.startsWith("!roll") ){
         var rolls = roll(message);
         for(var i = 0; i < rolls.length; i++) {
@@ -54,4 +107,5 @@ bot.on('message', function(user, userID, channelID, message, event) {
             });
         }
     }
+
 });
