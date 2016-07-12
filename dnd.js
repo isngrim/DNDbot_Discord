@@ -67,7 +67,7 @@ function createGames(gamesData) {
 		output[id] = new Game(id, game.name);
 		output[id].state = game.state;
 		output[id].players = {};
-		for(playerId in game.players) {
+		for(var playerId in game.players) {
 			var player = game.players[playerId];
 			console.log(player);
 			output[id].players[playerId] = new Player(player.user, player.userId, player.title, player.stats);
