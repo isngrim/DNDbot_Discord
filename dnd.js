@@ -6,7 +6,7 @@ if(Object.freeze) {
 	Object.freeze(gameStates);
 	Object.freeze(gameEntityType);
 }
-function Player(user, id, title, stats) {
+function Player(user=null, id=null, title=null, stats=null) {
 	this.user = user;
 	this.stats = stats;
 	this.title = title;
@@ -72,13 +72,15 @@ function createGames(gamesData) {
 			console.log(player);
 			output[id].players[playerId] = new Player(player.user, player.userId, player.title, player.stats);
 		}
+		output[id].order = game.order;
 	}
 	return output;
 }
+
 if(module) {
 	module.exports = {
 		Player: Player,
 		Game: Game,
-		createGames: createGames
+		createGames: createGames,
 	}
 }

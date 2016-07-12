@@ -149,7 +149,7 @@ bot.on('message', function(user, userID, channelID, message, event) {
     if (message.startsWith("!game")) {
         processGame(user, userID, channelID, message, event);
     }
-    if (message.startsWith("!roll") ){
+    else if (message.startsWith("!roll") ){
         var rolls = roll(message);
         for(var i = 0; i < rolls.length; i++) {
             var aggregate = "";
@@ -167,4 +167,4 @@ bot.on('message', function(user, userID, channelID, message, event) {
 
 });
 
-module.exports = bot
+module.exports = {bot: bot, save: saveGames, load:loadGames}

@@ -40,10 +40,13 @@ if (cluster.isMaster) {
   require('./bot.js');
 }*/
 
-var bot = require('./bot.js');
+var bot_module = require('./bot.js');
+var bot = bot_module.bot
 var fs = require("fs");
 var express = require('express');
 var bodyParser = require('body-parser');
+var _ = require("lodash");
+
 var env = process.env;
 var main = express();
 
@@ -65,7 +68,8 @@ main.get("/", function(req, res, next) {
   });
 })
 main.get('/bot_game_data.json',  function(req, res, next) {
-  var options = {
+  res.send(JSON.stringify(bot.games));
+  /*var options = {
     root: __dirname,
     dotfiles: 'deny',
     headers: {
@@ -77,16 +81,23 @@ main.get('/bot_game_data.json',  function(req, res, next) {
     if(err) {
       console.log(err);
     }
-  });
+  });*/
 });
 main.post('/bot_game_data.json',  function(req, res, next) {
-  fs.writeFile('./game_data/games.json', JSON.stringify(req.body));
   bot.games = req.body;
-  for(var game in req.body) {
-    console.log(game);
-  }
+  bot.save(bot);
+  //fs.writeFile('./game_data/games.json', JSON.stringify(req.body));
+
   res.sendStatus(200);
 });
+main.post('/updates.json', function(req, res, next) {
+  if(JSON.stringify(req.body) == JSON.stringify(bot.games)){
+    res.send({"updates": false})
+  }
+  else {
+    res.send({"updates": true})
+  }
+})
 main.use('/static', express.static('static'));
 main.use('/static/lib', express.static('bower_components'));
 main.listen(env.NODE_PORT || 3000, env.NODE_IP || 'localhost', function () {

@@ -25,6 +25,24 @@
 				console.log(req)
 			});
 		}
+		function checkUpdates() {
+			var req = {
+			 method: 'POST',
+				url: '/updates.json',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: $scope.games
+			}
+
+			$http(req).then(function success(response) {
+				console.log(response)
+			});
+		}
+
+		$interval(checkUpdates, 2000);
+
+
 		$scope.loadGames();
 	}
 	GameListController.$inject = ['$scope', '$http', '$interval', '$sce'];
