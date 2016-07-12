@@ -6,7 +6,7 @@ if(Object.freeze) {
 	Object.freeze(gameStates);
 	Object.freeze(gameEntityType);
 }
-function Player(user=null, id=null, title=null, stats=null) {
+function Player(user, id=null, title=null, stats=null) {
 	this.user = user;
 	this.stats = stats;
 	this.title = title;
