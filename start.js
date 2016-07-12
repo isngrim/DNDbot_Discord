@@ -40,7 +40,7 @@ if (cluster.isMaster) {
   require('./bot.js');
 }*/
 
-require('./bot.js');
+var bot = require('./bot.js');
 var fs = require("fs");
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -80,7 +80,11 @@ main.get('/bot_game_data.json',  function(req, res, next) {
   });
 });
 main.post('/bot_game_data.json',  function(req, res, next) {
-  console.log(req.body);
+  fs.writeFile('./game_data/games.json', JSON.stringify(req.body));
+  bot.games = req.body;
+  for(var game in req.body) {
+    console.log(game);
+  }
   res.sendStatus(200);
 });
 main.use('/static', express.static('static'));

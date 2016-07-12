@@ -54,6 +54,13 @@ function loadGames(bot) {
 
 function processGame(user, userID, channelID, message, event) {
     var subcommand = message.split(/\.(.*)/)[1];
+    if(!subcommand) {
+        bot.sendMessage({
+            to: channelID,
+            message: "Invalid game command format: missing period"
+        });
+        return;
+    }
     //console.log(subcommand)
     if(subcommand.startsWith("help")) {
 
@@ -118,6 +125,17 @@ function processGame(user, userID, channelID, message, event) {
                 }
                 saveGames(bot);
             }
+            if(subcommand.startsWith("players")) {
+                var players = bot.games[channelID].players;
+                var output = "Players:\n";
+                for(var player in players){
+                    output += players[player].user + ": " + players[player].title + "\n"
+                }
+                bot.sendMessage({
+                    to: channelID,
+                    message: output
+                })
+            }
         }
         else {
             bot.sendMessage({
@@ -148,3 +166,5 @@ bot.on('message', function(user, userID, channelID, message, event) {
     }
 
 });
+
+module.exports = bot

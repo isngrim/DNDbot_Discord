@@ -6,13 +6,14 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <link href="/static/index.css" rel="stylesheet">
   <script src="/static/lib/angular/angular.min.js"></script>
+  <script src="/static/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 </head>
 <body>
   <div ng-controller="GameListController as gamesList">
-    <button ng-click="loadGames()">Refresh</button>
+    <button class="button btn-primary" ng-click="loadGames()">Refresh</button>
     <div class="container-fluid games" ng-model="games">
       <h1>DND Bot Web Dashboard</h1>
-      <div class="game container" ng-repeat="(id, game) in games">
+      <div class="game-panel container" ng-repeat="(id, game) in games">
         <hr>
         <h2>{{game.name}} <small>{{game.id}}</small></h2>
         <table class="table table-bordered">
@@ -21,16 +22,18 @@
         </table>
         <h4>Players</h4>
         <table class="table table-bordered">
-
+          <tr>
+            <th>Discord Name</th><th>Character Name</th>
+          </tr>
           <tr ng-repeat="(player_id, player) in game.players">
-            <td>{{player.user}}</td><td>{{player.title}}
+            <td>{{player.user}}</td><td><input type="text" ng-model="player.title"/></td>
           </tr>
 
         </table>
       </div>
 
     </div>
-    <button ng-click="saveGames()">Save Games</button>
+    <button class="button btn-primary" ng-click="saveGames()">Save Games</button>
   </div>
   <script src="/static/index.js"></script>
 </body>

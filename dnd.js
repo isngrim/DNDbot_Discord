@@ -82,5 +82,3 @@ if(module) {
 		createGames: createGames
 	}
 }
-
-console.log(Game.prototype.constructor)
