@@ -53,7 +53,7 @@ function loadGames(bot) {
 }
 
 function processGame(user, userID, channelID, message, event) {
-    subcommand = message.split(/\.(.*)/)[1];
+    var subcommand = message.split(/\.(.*)/)[1];
     console.log(subcommand)
     if(subcommand.startsWith("help")) {
 
