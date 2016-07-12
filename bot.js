@@ -54,7 +54,7 @@ function loadGames(bot) {
 
 function processGame(user, userID, channelID, message, event) {
     var subcommand = message.split(/\.(.*)/)[1];
-    console.log(subcommand)
+    //console.log(subcommand)
     if(subcommand.startsWith("help")) {
 
     }
@@ -75,13 +75,13 @@ function processGame(user, userID, channelID, message, event) {
         }
     }
     else if(subcommand.startsWith("list") ) {
-        console.log(bot.games);
+        //console.log(bot.games);
         for(var game in bot.games) {
             bot.sendMessage({
                 to: channelID,
                 message: "Game: " +bot.channels[game].name
             }); 
-            console.log(bot.games[game].players);
+            //console.log(bot.games[game].players);
         }
     }
     else {
