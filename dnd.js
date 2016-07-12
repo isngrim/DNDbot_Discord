@@ -6,10 +6,11 @@ if(Object.freeze) {
 	Object.freeze(gameStates);
 	Object.freeze(gameEntityType);
 }
-function Player(user, title, stats) {
+function Player(user, id, title, stats) {
 	this.user = user;
 	this.stats = stats;
 	this.title = title;
+	this.userId = id;
 }
 Player.prototype.setStats = function(stats) {
 	this.stats = stats;
@@ -49,6 +50,9 @@ Game.prototype.pause = function() {
 Game.prototype.resume = function() {
 	this.state = gameStates.PLAYING;
 }
+Game.prototype.end = function() {
+	this.state = gameStates.ENDED;
+}
 Game.prototype.finishTurn = function() {
 	this.currentTurn = this.order[0];
 	this.order.push(this.order.shift());
@@ -56,9 +60,27 @@ Game.prototype.finishTurn = function() {
 Game.prototype.getStatus = function() {
 	return JSON.stringify(this);
 }
+function createGames(gamesData) {
+	var output = {}
+	for(var id in gamesData) {
+		var game = gamesData[id];
+		output[id] = new Game(id, game.name);
+		output[id].state = game.state;
+		output[id].players = {};
+		for(playerId in game.players) {
+			var player = game.players[playerId];
+			console.log(player);
+			output[id].players[playerId] = new Player(player.user, player.userId, player.title, player.stats);
+		}
+	}
+	return output;
+}
 if(module) {
 	module.exports = {
 		Player: Player,
-		Game: Game
+		Game: Game,
+		createGames: createGames
 	}
 }
+
+console.log(Game.prototype.constructor)

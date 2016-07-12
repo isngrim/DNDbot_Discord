@@ -18,6 +18,7 @@ if (typeof String.prototype.startsWith != 'function') {
 }
 bot.on('ready', function() {
     console.log(bot.username + " - (" + bot.id + ")");
+    loadGames(bot);
 });
 
 function roll(mssg) {
@@ -45,6 +46,12 @@ function roll(mssg) {
 function saveGames(bot) {
     fs.writeFile('./game_data/games.json', JSON.stringify(bot.games))
 }
+function loadGames(bot) {
+    fs.readFile('./game_data/games.json', function(err, data) {
+        bot.games = DND.createGames(JSON.parse(data));
+    });
+}
+
 function processGame(user, userID, channelID, message, event) {
     subcommand = message.split(/\.(.*)/)[1];
     console.log(subcommand)
@@ -67,35 +74,56 @@ function processGame(user, userID, channelID, message, event) {
             });
         }
     }
-    if(subcommand.startsWith("list") ) {
+    else if(subcommand.startsWith("list") ) {
         console.log(bot.games);
         for(var game in bot.games) {
             bot.sendMessage({
                 to: channelID,
                 message: "Game: " +bot.channels[game].name
             }); 
+            console.log(bot.games[game].players);
         }
     }
-    if(subcommand.startsWith("end") ) {
+    else {
         if(bot.games.hasOwnProperty(channelID)) {
-            bot.sendMessage({
-                to: channelID,
-                message: "Game ended"
-            });
-            delete bot.games[channelID]
-            saveGames(bot);
+            if(subcommand.startsWith("start")) {
+                bot.sendMessage({
+                    to: channelID,
+                    message: "Game started."
+                });
+                bot.games[channelID].start();
+                saveGames(bot);
+            }
+            if(subcommand.startsWith("end") ) {
+                bot.sendMessage({
+                    to: channelID,
+                    message: "Game ended."
+                });
+                bot.games[channelID].end();
+                saveGames(bot);
+            }
+            if(subcommand.startsWith("delete") ) {
+                bot.sendMessage({
+                    to: channelID,
+                    message: "Game deleted."
+                });
+                delete bot.games[channelID];
+                saveGames(bot);
+            }
+            if(subcommand.startsWith("add-players")) {
+                var players = event.d.mentions;
+                for(var i=0; i < players.length; i++) {
+                    var player = players[i];
+                    bot.games[channelID].players[player.id] = new DND.Player(player.username, player.id);
+                }
+                saveGames(bot);
+            }
         }
         else {
             bot.sendMessage({
                 to: channelID,
                 message: "Game does not exist."
             }); 
-        }
-    }
-    if(subcommand.startsWith("add-player")) {
-        if(bot.games.hasOwnProperty(channelID)) {
-            console.log(event.d.mentions)
-            saveGames(bot);
         }
     }
 }
