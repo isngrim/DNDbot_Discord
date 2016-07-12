@@ -15,23 +15,25 @@
     <button class="button btn-primary" ng-click="loadGames()">Refresh</button>
     <div class="container-fluid games" ng-model="games">
       <h1>DND Bot Web Dashboard</h1>
-      <div class="game-panel container" ng-repeat="(id, game) in games">
-        <hr>
-        <h2>{{game.name}} <small>{{game.id}}</small></h2>
-        <table class="table table-bordered">
-          <tr><td>Game Status:</td><td>{{game.state}}</td></tr>
-          <tr><td>Current Turn:</td><td>{{game.currentTurn}}</td></tr>
-        </table>
-        <h4>Players</h4>
-        <table class="table table-bordered">
-          <tr>
-            <th>Discord Name</th><th>Character Name</th>
-          </tr>
-          <tr ng-repeat="(player_id, player) in game.players">
-            <td>{{player.user}}</td><td><input type="text" ng-model="player.title"/></td>
-          </tr>
+      <div class="panel panel-default game-panel" ng-repeat="(id, game) in games">
+        
+        <div class="panel-heading"><h2>{{game.name}} <small>{{game.id}}</small></h2></div>
+        <div class="panel-body">
+          <table class="table table-bordered">
+            <tr><td>Game Status:</td><td>{{game.state}}</td></tr>
+            <tr><td>Current Turn:</td><td>{{game.currentTurn}}</td></tr>
+          </table>
+          <h4>Players</h4>
+          <table class="table table-bordered">
+            <tr>
+              <th>Discord Name</th><th>Character Name</th>
+            </tr>
+            <tr ng-repeat="(player_id, player) in game.players">
+              <td>{{player.user}}</td><td><input type="text" ng-model="player.title"/></td>
+            </tr>
 
-        </table>
+          </table>
+          </div>
       </div>
 
     </div>

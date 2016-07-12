@@ -85,7 +85,8 @@ main.get('/bot_game_data.json',  function(req, res, next) {
 });
 main.post('/bot_game_data.json',  function(req, res, next) {
   bot.games = req.body;
-  bot.save(bot);
+  bot_module.save(bot);
+  bot_module.load(bot);
   //fs.writeFile('./game_data/games.json', JSON.stringify(req.body));
 
   res.sendStatus(200);
