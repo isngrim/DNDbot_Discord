@@ -6,11 +6,11 @@ if(Object.freeze) {
 	Object.freeze(gameStates);
 	Object.freeze(gameEntityType);
 }
-function Player(user, id=null, title=null, stats=null) {
-	this.user = user;
-	this.stats = stats;
-	this.title = title;
-	this.userId = id;
+function Player(user, id, title, stats) {
+	this.user = user ? user: null;
+	this.stats = stats ? stats: null;
+	this.title = title ? title: null;
+	this.userId = id ? id: null;
 }
 Player.prototype.setStats = function(stats) {
 	this.stats = stats;
