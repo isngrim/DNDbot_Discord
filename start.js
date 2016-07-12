@@ -39,5 +39,52 @@ if (cluster.isMaster) {
   require('./app.js');
   require('./bot.js');
 }*/
-require('./bot.js');
 
+require('./bot.js');
+var fs = require("fs");
+var express = require('express');
+var bodyParser = require('body-parser');
+var env = process.env;
+var main = express();
+
+main.use(bodyParser.json());
+
+main.get("/", function(req, res, next) {
+  var options = {
+    root: __dirname,
+    dotfiles: 'deny',
+    headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+    }
+  };
+  res.sendFile("./static/index.html", options, function(err) {
+    if(err) {
+      console.log(err);
+    }
+  });
+})
+main.get('/bot_game_data.json',  function(req, res, next) {
+  var options = {
+    root: __dirname,
+    dotfiles: 'deny',
+    headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+    }
+  };
+  res.sendFile("./game_data/games.json", options, function(err) {
+    if(err) {
+      console.log(err);
+    }
+  });
+});
+main.post('/bot_game_data.json',  function(req, res, next) {
+  console.log(req.body);
+  res.sendStatus(200);
+});
+main.use('/static', express.static('static'));
+main.use('/static/lib', express.static('bower_components'));
+main.listen(env.NODE_PORT || 3000, env.NODE_IP || 'localhost', function () {
+    console.log('Application worker ${process.pid} started...');
+})

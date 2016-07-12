@@ -1,6 +1,6 @@
 var Discord = require('discord.io');
 var DND = require('./dnd.js');
-
+var fs = require('fs');
 var bot = new Discord.Client({
     token: "MTk3MTg4MzI0MTQwNTE1MzI5.ClN9cA.QWf5EAxRWzWrDNDT7wHXD20Vbas",
     autorun: true
@@ -41,14 +41,24 @@ function roll(mssg) {
     }
 
 }
+
+function saveGames(bot) {
+    fs.writeFile('./game_data/games.json', JSON.stringify(bot.games))
+}
 function processGame(user, userID, channelID, message, event) {
-    if(message.startsWith("!game.init") ) {
+    subcommand = message.split(/\.(.*)/)[1];
+    console.log(subcommand)
+    if(subcommand.startsWith("help")) {
+
+    }
+    if(subcommand.startsWith("init") ) {
         if(!bot.games.hasOwnProperty(channelID)) {
-            bot.games[channelID] = new DND.Game(channelID);
+            bot.games[channelID] = new DND.Game(channelID, bot.channels[channelID].name);
             bot.sendMessage({
                 to: channelID,
                 message: "Game created.  Add players now."
             });
+            saveGames(bot);
         }
         else {
             bot.sendMessage({
@@ -57,7 +67,7 @@ function processGame(user, userID, channelID, message, event) {
             });
         }
     }
-    if(message.startsWith("!game.list") ) {
+    if(subcommand.startsWith("list") ) {
         console.log(bot.games);
         for(var game in bot.games) {
             bot.sendMessage({
@@ -66,13 +76,14 @@ function processGame(user, userID, channelID, message, event) {
             }); 
         }
     }
-    if(message.startsWith("!game.end") ) {
+    if(subcommand.startsWith("end") ) {
         if(bot.games.hasOwnProperty(channelID)) {
             bot.sendMessage({
                 to: channelID,
                 message: "Game ended"
             });
             delete bot.games[channelID]
+            saveGames(bot);
         }
         else {
             bot.sendMessage({
@@ -81,11 +92,11 @@ function processGame(user, userID, channelID, message, event) {
             }); 
         }
     }
-    if(message.startsWith("!game.add-player")) {
+    if(subcommand.startsWith("add-player")) {
         if(bot.games.hasOwnProperty(channelID)) {
             console.log(event.d.mentions)
+            saveGames(bot);
         }
-
     }
 }
 bot.on('message', function(user, userID, channelID, message, event) {

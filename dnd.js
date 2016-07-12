@@ -15,8 +15,9 @@ Player.prototype.setStats = function(stats) {
 	this.stats = stats;
 }
 
-function Game(ChannelID) {
+function Game(ChannelID, name) {
 	this.id = ChannelID;
+	this.name = name;
 	this.state = gameStates.INITIALIZING;
 	this.currentTurn = null;
 	this.players = {}
