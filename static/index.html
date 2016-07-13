@@ -32,15 +32,14 @@
   -->
 
   <div ng-controller="GameListController as gamesList">
-    <button class="button btn-primary" ng-click="loadGames()">Refresh</button>
     <div class="container-fluid games" ng-model="games">
       <h1>DND Bot Web Dashboard</h1>
       <div class="panel panel-default game-panel" ng-repeat="(id, game) in games">
         
         <div class="panel-heading">
           <h2>{{game.name}} <small>{{game.id}}</small></h2>
-          <button class="button btn-primary" ng-click="saveGames()">Save Game</button>
-          <button class="button btn-primary" ng-click="loadGames()">Refresh</button>
+          <button type="button" class="btn btn-primary" ng-click="saveGames()">Save Game</button>
+          <button type="button" class="btn btn-primary" ng-click="loadGames()">Refresh</button>
         </div>
         <div class="panel-body">
           <div class="table-responsive">
