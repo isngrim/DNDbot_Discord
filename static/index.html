@@ -11,6 +11,26 @@
   <script src="/static/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 </head>
 <body>
+  <!--
+  <script type="text/ng-template" id="myModalContent.html">
+      <div class="modal-header">
+          <h3>I'm a modal!</h3>
+      </div>
+      <div class="modal-body">
+          <ul>
+              <li ng-repeat="item in items">
+                  <a ng-click="selected.item = item">{{ item }}</a>
+              </li>
+          </ul>
+          Selected: <b>{{ selected.item }}</b>
+      </div>
+      <div class="modal-footer">
+          <button class="btn btn-primary" ng-click="ok()">OK</button>
+          <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+      </div>
+  </script>
+  -->
+
   <div ng-controller="GameListController as gamesList">
     <button class="button btn-primary" ng-click="loadGames()">Refresh</button>
     <div class="container-fluid games" ng-model="games">
@@ -21,15 +41,32 @@
         <div class="panel-body">
           <table class="table table-bordered">
             <tr><td>Game Status:</td><td>{{game.state}}</td></tr>
-            <tr><td>Current Turn:</td><td>{{game.currentTurn}}</td></tr>
+            <tr><td>Current Turn:</td>
+                <td ng-if="game.currentTurn.type == 'player'">{{ game.players[game.currentTurn.entity].title }} ({{ game.players[game.currentTurn.entity].user }})</td>
+                <td ng-if="game.currentTurn.type == 'enemy'">{{ game.enemies[game.currentTurn.entity] }}</td>
+                <td ng-if="game.currentTurn == null"></td>
+            </tr>
           </table>
           <h4>Players</h4>
           <table class="table table-bordered">
             <tr>
-              <th>Discord Name</th><th>Character Name</th>
+              <th>DM</th><th>Discord Name</th><th>Character Name</th><th>Stats</th>
             </tr>
             <tr ng-repeat="(player_id, player) in game.players">
-              <td>{{player.user}}</td><td><input type="text" ng-model="player.title"/></td>
+              <td><input type="checkbox" ng-model="player.isDungeonMaster"/></td>
+              <td>{{player.user}}</td>
+              <td><input type="text" ng-model="player.title"/></td>
+              <td>
+                <table>
+
+                  <tr><td><label>Strength</label></td><td><input type="number" ng-model="player.stats.strength"/></td></tr>
+                  <tr><td><label>Dexterity</label></td><td><input type="number" ng-model="player.stats.dexterity"/></td></tr>
+                  <tr><td><label>Constitution</label></td><td><input type="number" ng-model="player.stats.constitution"/></td></tr>
+                  <tr><td><label>Intelligence</label></td><td><input type="number" ng-model="player.stats.intelligence"/></td></tr>
+                  <tr><td><label>Wisdom</label></td><td><input type="number" ng-model="player.stats.wisdom"/></td></tr>
+                  <tr><td><label>Charisma</label></td><td><input type="number" ng-model="player.stats.charisma"/></td></tr>
+                </table>
+              </td>
             </tr>
 
           </table>

@@ -48,6 +48,7 @@ function saveGames(bot) {
 }
 function loadGames(bot) {
     fs.readFile('./game_data/games.json', function(err, data) {
+        console.log(data.toString());
         bot.games = DND.createGames(JSON.parse(data));
     });
 }
@@ -61,6 +62,7 @@ function processGame(user, userID, channelID, message, event) {
         });
         return;
     }
+    subcommand = subcommand.toLowerCase()
     //console.log(subcommand)
     if(subcommand.startsWith("help")) {
 
@@ -135,6 +137,26 @@ function processGame(user, userID, channelID, message, event) {
                     to: channelID,
                     message: output
                 })
+            }
+            if(subcommand.startsWith("dungeon-master")) {
+                if(event.d.mentions.length == 0) {
+                    output = "Dungeon Master:\n";
+                    var players = bot.games[channelID].players;
+                    for(var player in players) {
+                        if(players[player].isDungeonMaster) {
+                            output += "\t"+players[player].user + ": " + players[player].title + "\n"
+                        }
+                    }
+                    bot.sendMessage({
+                        to: channelID,
+                        message: output
+                    })
+                }
+                else {
+                    var player = event.d.mentions[0];
+                    bot.games[channelID].players[player.id].isDungeonMaster = true;
+                    saveGames(bot);
+                }
             }
         }
         else {

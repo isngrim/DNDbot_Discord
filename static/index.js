@@ -40,13 +40,13 @@
 			});
 		}
 
-		$interval(checkUpdates, 2000);
+		//$interval(checkUpdates, 2000);
 
 
 		$scope.loadGames();
 	}
 	GameListController.$inject = ['$scope', '$http', '$interval', '$sce'];
+	app.controller('GameListController', GameListController);
 
-	app.controller('GameListController', GameListController)
 }());
 
